@@ -1,4 +1,4 @@
-package web.technologies.flixer.role;
+package web.technologies.flixer.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

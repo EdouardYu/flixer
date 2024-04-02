@@ -1,7 +1,11 @@
-package web.technologies.flixer.user;
+package web.technologies.flixer.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import web.technologies.flixer.entity.User;
+import web.technologies.flixer.repository.UserRepository;
+
+import java.util.List;
 
 @Service
 public class UserService {
@@ -12,4 +16,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
+    public List<User> getUsers() {
+        return userRepository.findAll();
+    }
 }

@@ -1,4 +1,4 @@
-package web.technologies.flixer.user;
+package web.technologies.flixer.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -8,15 +8,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import web.technologies.flixer.role.Role;
-import web.technologies.flixer.role.RoleService;
 
 import java.util.Collection;
-import java.util.List;
 
 @Data
 @Builder
@@ -34,7 +29,6 @@ public class User implements UserDetails {
     private Long age;
     private Boolean enabled;
     private Long role_id;
-
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

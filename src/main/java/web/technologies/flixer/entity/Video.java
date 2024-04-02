@@ -1,4 +1,4 @@
-package web.technologies.flixer.video;
+package web.technologies.flixer.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
