@@ -138,3 +138,6 @@ CREATE TABLE purchase (
     CONSTRAINT purchase_user_fk FOREIGN KEY (user_id) REFERENCES "user"(id),
     CONSTRAINT purchase_movie_fk FOREIGN KEY (movie_id) REFERENCES movie(id)
 );
+
+INSERT IGNORE INTO public.user (username, email,password,age,amount, enabled, role_id)
+VALUES ('Youtube', 'youtube@gmail.com', 123,-1, 0, TRUE, 3)
