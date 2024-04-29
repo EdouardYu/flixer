@@ -13,15 +13,20 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "video")
+@Table(name = "movie")
 public class Video {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
     private String url;
     private String description;
-    private LocalDate publish_time;
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE})
+    @JoinColumn(name = "supplier_id")
+    private User supplier;
     private String poster_url;
+    private Float price;
+    private LocalDate released_at;
+    private String director;
 }

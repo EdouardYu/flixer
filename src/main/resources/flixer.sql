@@ -71,7 +71,7 @@ CREATE TABLE movie (
     poster_url VARCHAR NOT NULL,
     director VARCHAR NOT NULL,
     supplier_id INTEGER NOT NULL,
-    price DECIMAL(10, 2) NOT NULL,
+    price DECIMAL(3, 2) NOT NULL,
     CONSTRAINT supplier_fk FOREIGN KEY (supplier_id) REFERENCES "user"(id)
 );
 

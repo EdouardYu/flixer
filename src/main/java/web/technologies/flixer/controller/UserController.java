@@ -1,9 +1,6 @@
 package web.technologies.flixer.controller;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,7 +10,7 @@ import web.technologies.flixer.service.UserService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/users")
 public class UserController {
     private UserService userService;
 
@@ -23,7 +20,7 @@ public class UserController {
     }
 
     @GetMapping
-    public List<User> getVideos(){
+    public List<User> getUsers(){
         return userService.getUsers();
     }
 
