@@ -4,32 +4,38 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import web.technologies.flixer.entity.User;
-import web.technologies.flixer.entity.Video;
-import web.technologies.flixer.service.UserService;
-import web.technologies.flixer.service.VideoService;
+import web.technologies.flixer.entity.Movie;
+import web.technologies.flixer.entity.Tag;
+import web.technologies.flixer.entity.TagLabel;
+import web.technologies.flixer.service.MovieService;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/videos")
+@RequestMapping("/movies")
 public class VideoController {
-    private VideoService videoService;
+    private MovieService movieService;
 
     @Autowired
-    public VideoController(VideoService videoService) {
-        this.videoService = videoService;
+    public VideoController(MovieService movieService) {
+        this.movieService = movieService;
     }
 
     @GetMapping
-    public List<Video> getVideos(){
-        return videoService.getVideos();
+    public List<Movie> getMovies(){
+        return movieService.getMovies();
     }
 
     @PostMapping()
-    public ResponseEntity<String> addNewVideo(@RequestBody Video video) {
-        videoService.addNewVideo(video);
-        return new ResponseEntity<>("Video" + video.getTitle() + " ajouté avec succès", HttpStatus.CREATED);
-
+    public ResponseEntity<String> addNewMovie(@RequestBody Movie movie) {
+        movieService.addNewMovie(movie);
+        return new ResponseEntity<>("Video" + movie.getTitle() + " ajouté avec succès", HttpStatus.CREATED);
     }
+
+    @GetMapping("/tags")
+    public List<Movie> getMoviesMatchingAllTags(@RequestParam List<String> tagLabel){
+        System.out.println(tagLabel);
+        return movieService.getMoviesMatchingAllTags(tagLabel);
+    }
+
 }
