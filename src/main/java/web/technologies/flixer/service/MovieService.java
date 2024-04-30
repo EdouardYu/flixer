@@ -52,4 +52,21 @@ public class MovieService {
         Collections.sort(tagLabels);
         return movieTagLabels.equals(tagLabels);
     }
+
+    public List <Movie> getMoviesContainingLetters(String letters) {
+        List<Movie> allMovies = movieRepository.findAll();
+        List<Movie> matchingMovies = new ArrayList<>();
+
+        for (Movie movie : allMovies) {
+            if (movieContainsAllLetters(movie, letters)) {
+                matchingMovies.add(movie);
+            }
+        }
+        return matchingMovies;
+    }
+
+    private boolean movieContainsAllLetters(Movie movie, String letters) {
+        String movieName = movie.getTitle();
+        return movieName.contains(letters);
+    }
 }

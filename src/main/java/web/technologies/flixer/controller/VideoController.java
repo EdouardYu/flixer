@@ -5,8 +5,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import web.technologies.flixer.entity.Movie;
-import web.technologies.flixer.entity.Tag;
-import web.technologies.flixer.entity.TagLabel;
 import web.technologies.flixer.service.MovieService;
 
 import java.util.List;
@@ -34,8 +32,11 @@ public class VideoController {
 
     @GetMapping("/tags")
     public List<Movie> getMoviesMatchingAllTags(@RequestParam List<String> tagLabel){
-        System.out.println(tagLabel);
         return movieService.getMoviesMatchingAllTags(tagLabel);
     }
 
+    @GetMapping("/findByName")
+    public List<Movie> getMoviesContainingLetters(@RequestParam String letters){
+        return movieService.getMoviesContainingLetters(letters);
+    }
 }
