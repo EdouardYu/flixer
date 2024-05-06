@@ -1,3 +1,3 @@
 package web.technologies.flixer.dto;
 
-public record AuthenticationDTO(String username, String password) {}
+public record AuthenticationDTO(String email, String password) {}

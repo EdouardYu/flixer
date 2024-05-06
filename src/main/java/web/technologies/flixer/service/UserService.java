@@ -7,7 +7,6 @@ import web.technologies.flixer.entity.User;
 import web.technologies.flixer.repository.UserRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserService {
@@ -23,9 +22,9 @@ public class UserService {
     }
 
     public boolean isUserExist(AuthenticationDTO authenticationDTO) {
-        String username = authenticationDTO.username();
+        String email = authenticationDTO.email();
         String password =  authenticationDTO.password();
-        User user =  userRepository.findUserByUsername(username).orElseThrow(() -> new RuntimeException("User" + username + "not found"));
+        User user =  userRepository.findUserByEmail(email).orElseThrow(() -> new RuntimeException("Email" + email + "not found"));
         String realEncodedUserPassword = user.getPassword();
         // Not encoded yet
         return realEncodedUserPassword.equals(password);
