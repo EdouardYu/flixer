@@ -2,17 +2,12 @@ package web.technologies.flixer.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import web.technologies.flixer.entity.Movie;
-import web.technologies.flixer.entity.Tag;
-import web.technologies.flixer.entity.TagLabel;
+import web.technologies.flixer.entity.*;
 import web.technologies.flixer.repository.MovieRepository;
-import web.technologies.flixer.entity.MovieTag;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class MovieService {
@@ -27,6 +22,10 @@ public class MovieService {
         return movieRepository.findAll();
     }
 
+    public List<Movie> getMovies(int limit) {
+        return movieRepository.findRandomNMovies(limit);
+    }
+
     public void addNewMovie(Movie movie) {
         movieRepository.save(movie);
     }
@@ -36,14 +35,14 @@ public class MovieService {
         List<Movie> matchingMovies = new ArrayList<>();
 
         for (Movie movie : allMovies) {
-            if (movieContainsAllTags(movie, tagLabels)) {
+            if (isMovieContainsAllTags(movie, tagLabels)) {
                 matchingMovies.add(movie);
             }
         }
         return matchingMovies;
     }
 
-    private boolean movieContainsAllTags(Movie movie, List<String> tagLabels) {
+    private boolean isMovieContainsAllTags(Movie movie, List<String> tagLabels) {
         List<String> movieTagLabels = new ArrayList<>();
         for (Tag tag : movie.getTags()) {
             movieTagLabels.add(tag.getLabel());
@@ -68,5 +67,9 @@ public class MovieService {
     private boolean movieContainsAllLetters(Movie movie, String letters) {
         String movieName = movie.getTitle();
         return movieName.contains(letters);
+    }
+
+    public List<Movie> getTopRatedMovies(int limit) {
+        return movieRepository.getTopRatedMovies(limit);
     }
 }

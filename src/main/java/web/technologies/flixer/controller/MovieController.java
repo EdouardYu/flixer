@@ -11,17 +11,21 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/movies")
-public class VideoController {
-    private MovieService movieService;
+public class MovieController {
+    private final MovieService movieService;
 
     @Autowired
-    public VideoController(MovieService movieService) {
+    public MovieController(MovieService movieService) {
         this.movieService = movieService;
     }
 
-    @GetMapping
-    public List<Movie> getMovies(){
-        return movieService.getMovies();
+    @GetMapping()
+    public List<Movie> getMovies(@RequestParam(required = false, defaultValue = "0") int limit){
+        if (limit > 0) {
+            return movieService.getMovies(limit);
+        } else {
+            return movieService.getMovies();
+        }
     }
 
     @PostMapping()
@@ -31,12 +35,17 @@ public class VideoController {
     }
 
     @GetMapping("/tags")
-    public List<Movie> getMoviesMatchingAllTags(@RequestParam List<String> tagLabel){
+        public List<Movie> getMoviesMatchingAllTags(@RequestParam List<String> tagLabel){
         return movieService.getMoviesMatchingAllTags(tagLabel);
     }
 
     @GetMapping("/findByName")
     public List<Movie> getMoviesContainingLetters(@RequestParam String letters){
         return movieService.getMoviesContainingLetters(letters);
+    }
+
+    @GetMapping("/getTopRatedMovies")
+    public List<Movie> getTopRatedMovies(@RequestParam(required = false, defaultValue = "5") int limit) {
+        return movieService.getTopRatedMovies(limit);
     }
 }

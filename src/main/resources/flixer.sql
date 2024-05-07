@@ -86,7 +86,7 @@ CREATE TABLE movie_tag (
 CREATE TABLE rating (
     movie_id INTEGER NOT NULL,
     user_id INTEGER NOT NULL,
-    value FLOAT NOT NULL,
+    value DECIMAL(1,2) NOT NULL,
     PRIMARY KEY (movie_id, user_id),
     CONSTRAINT rating_movie_fk FOREIGN KEY (movie_id) REFERENCES movie(id),
     CONSTRAINT rating_user_fk FOREIGN KEY (user_id) REFERENCES "user"(id)
@@ -139,5 +139,4 @@ CREATE TABLE purchase (
     CONSTRAINT purchase_movie_fk FOREIGN KEY (movie_id) REFERENCES movie(id)
 );
 
-INSERT IGNORE INTO public.user (username, email,password,age,amount, enabled, role_id)
-VALUES ('Youtube', 'youtube@gmail.com', 123,-1, 0, TRUE, 3)
+INSERT IGNORE INTO public.user (username, email,password,age,amount, enabled, role_id) VALUES ('Youtube', 'youtube@gmail.com', 123,-1, 0, TRUE, 3)

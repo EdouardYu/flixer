@@ -9,14 +9,14 @@ import java.util.Optional;
 
 @Service
 public class RoleService {
-    private RoleRepository roleRepository;
+    private final RoleRepository roleRepository;
 
     @Autowired
     public RoleService(RoleRepository roleRepository) {
         this.roleRepository = roleRepository;
     }
 
-    public Optional<Role> getRoleById(Long id){
-        return roleRepository.findById(id);
+    public Role getRoleById(Long id){
+        return roleRepository.findById(id).orElseThrow(() -> new RuntimeException("No Role exist for the id " + id.toString()));
     }
 }
