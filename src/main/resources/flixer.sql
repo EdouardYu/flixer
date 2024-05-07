@@ -139,4 +139,26 @@ CREATE TABLE purchase (
     CONSTRAINT purchase_movie_fk FOREIGN KEY (movie_id) REFERENCES movie(id)
 );
 
-INSERT IGNORE INTO public.user (username, email,password,age,amount, enabled, role_id) VALUES ('Youtube', 'youtube@gmail.com', 123,-1, 0, TRUE, 3)
+INSERT INTO public.user (username, email, password, age, amount, enabled, role_id)
+VALUES ('Youtube', 'youtube@gmail.com', 123, -1, 0, TRUE, 3)
+ON CONFLICT (username) DO NOTHING;
+
+INSERT INTO rating (movie_id, user_id, value)
+VALUES
+    (28, 2, 4.0),
+    (29, 2, 3.5),
+    (30, 2, 4.0),
+    (31, 2, 4.0),
+    (32, 2, 3.5),
+    (33, 2, 4.0),
+    (34, 2, 3.0),
+    (35, 2, 4.0),
+    (36, 2, 4.0),
+    (37, 2, 3.0),
+    (38, 2, 4.0),
+    (39, 2, 3.5),
+    (40, 2, 3.0),
+    (41, 2, 4.0),
+    (42, 2, 4.0),
+    (43, 2, 4.0)
+ON CONFLICT (movie_id, user_id) DO NOTHING;
