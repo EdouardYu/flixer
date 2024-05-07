@@ -10,7 +10,7 @@ CREATE TABLE "user" (
     username VARCHAR UNIQUE NOT NULL,
     email VARCHAR UNIQUE NOT NULL,
     password VARCHAR NOT NULL,
-    age INTEGER NOT NULL,
+    birthday DATE NOT NULL,
     amount DECIMAL(10, 2) NOT NULL,
     enabled BOOLEAN NOT NULL DEFAULT FALSE,
     role_id INTEGER NOT NULL,

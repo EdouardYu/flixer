@@ -11,6 +11,7 @@ import web.technologies.flixer.repository.RoleRepository;
 import web.technologies.flixer.repository.UserRepository;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -41,7 +42,7 @@ public class UserService {
         String email = signUpDTO.email();
         String username = signUpDTO.username();
         String password = signUpDTO.password();
-        Long age = signUpDTO.age();
+        LocalDate birthday = signUpDTO.birthday();
         BigDecimal amount = BigDecimal.valueOf(100);
         Long roleId = signUpDTO.roleId();
         Boolean enabled = false;
@@ -51,7 +52,7 @@ public class UserService {
                 .email(email)
                 .username(username)
                 .password(password)
-                .age(age)
+                .birthday(birthday)
                 .amount(amount)
                 .role(role)
                 .enabled(enabled)
