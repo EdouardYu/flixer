@@ -42,7 +42,7 @@ public class UserService {
         String username = signUpDTO.username();
         String password = signUpDTO.password();
         Long age = signUpDTO.age();
-        BigDecimal amount = signUpDTO.amount();
+        BigDecimal amount = BigDecimal.valueOf(100);
         Long roleId = signUpDTO.roleId();
         Boolean enabled = false;
         // For now let's save decoded password -> Need to implement encoded password mechanism
