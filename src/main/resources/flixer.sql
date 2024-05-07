@@ -138,11 +138,11 @@ CREATE TABLE purchase (
     CONSTRAINT purchase_user_fk FOREIGN KEY (user_id) REFERENCES "user"(id),
     CONSTRAINT purchase_movie_fk FOREIGN KEY (movie_id) REFERENCES movie(id)
 );
-
 INSERT INTO public.user (username, email, password, age, amount, enabled, role_id)
 VALUES ('Youtube', 'youtube@gmail.com', 123, -1, 0, TRUE, 3)
 ON CONFLICT (username) DO NOTHING;
 
+/*Before using this check if user_id = 2 exists*/
 INSERT INTO rating (movie_id, user_id, value)
 VALUES
     (28, 2, 4.0),
@@ -162,3 +162,12 @@ VALUES
     (42, 2, 4.0),
     (43, 2, 4.0)
 ON CONFLICT (movie_id, user_id) DO NOTHING;
+
+/*Before using this : check if user_id = 10 exist*/
+/*INSERT INTO history (movie_id, user_id, watched_at)
+VALUES
+    (30, 10, '2023-05-07 15:30:00'),
+    (40, 10, '2023-04-15 18:45:00'),
+    (50, 10, '2023-03-20 20:15:00'),
+    (60, 10, '2023-02-10 12:00:00'),
+    (70, 10, '2023-01-05 08:30:00');*/
