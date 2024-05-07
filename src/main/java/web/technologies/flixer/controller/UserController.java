@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import web.technologies.flixer.dto.AuthenticationDTO;
+import web.technologies.flixer.dto.HistoryUserDTO;
 import web.technologies.flixer.dto.SignUpDTO;
 import web.technologies.flixer.entity.User;
 import web.technologies.flixer.service.UserService;
@@ -34,5 +35,15 @@ public class UserController {
     @PostMapping(value = "/signup", consumes = MediaType.APPLICATION_JSON_VALUE)
     public boolean isUserCreated(@RequestBody SignUpDTO signUpDTO) {
         return userService.isUserCreated(signUpDTO);
+    }
+
+    @GetMapping("/{id}")
+    public User getUserById(@PathVariable Long id) {
+        return userService.getUserById(id);
+    }
+
+    @GetMapping("/{id}/history")
+    public List <HistoryUserDTO> getHistoryByUserId(@PathVariable Long id) {
+        return userService.getHistoryByUserId(id);
     }
 }
