@@ -1,6 +1,8 @@
 package web.technologies.flixer.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import web.technologies.flixer.entity.*;
 import web.technologies.flixer.repository.MovieRepository;
@@ -27,11 +29,12 @@ public class MovieService {
     }
 
     public Movie getMovieById(Long id){
-        return movieRepository.findMovieById(id).orElseThrow(() -> new RuntimeException("Movie with id " + id.toString() + "does not exist"));
+        return movieRepository.findMovieById(id).orElseThrow(() -> new RuntimeException("Movie with id " + id.toString() + " does not exist"));
     }
 
-    public void addNewMovie(Movie movie) {
+    public ResponseEntity<String> addNewMovie(Movie movie) {
         movieRepository.save(movie);
+        return new ResponseEntity<>("The movie " + movie.getTitle() + "has been added", HttpStatus.CREATED);
     }
 
     public List<Movie> getMoviesMatchingAllTags(List<String> tagLabels) {

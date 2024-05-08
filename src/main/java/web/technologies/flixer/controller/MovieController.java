@@ -1,7 +1,6 @@
 package web.technologies.flixer.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import web.technologies.flixer.entity.Movie;
@@ -37,8 +36,7 @@ public class MovieController {
 
     @PostMapping()
     public ResponseEntity<String> addNewMovie(@RequestBody Movie movie) {
-        movieService.addNewMovie(movie);
-        return new ResponseEntity<>("Video" + movie.getTitle() + " ajouté avec succès", HttpStatus.CREATED);
+        return movieService.addNewMovie(movie);
     }
 
     @GetMapping("/tags")
