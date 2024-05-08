@@ -26,6 +26,10 @@ public class MovieService {
         return movieRepository.findRandomNMovies(limit);
     }
 
+    public Movie getMovieById(Long id){
+        return movieRepository.findMovieById(id).orElseThrow(() -> new RuntimeException("Movie with id " + id.toString() + "does not exist"));
+    }
+
     public void addNewMovie(Movie movie) {
         movieRepository.save(movie);
     }

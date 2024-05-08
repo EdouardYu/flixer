@@ -2,6 +2,8 @@ package web.technologies.flixer.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import web.technologies.flixer.dto.AuthenticationDTO;
 import web.technologies.flixer.dto.HistoryUserDTO;
@@ -44,7 +46,7 @@ public class UserService {
         return realEncodedUserPassword.equals(password);
     }
 
-    public boolean isUserCreated(SignUpDTO signUpDTO) {
+    public ResponseEntity<String> createUser(SignUpDTO signUpDTO) {
         String email = signUpDTO.email();
         String username = signUpDTO.username();
         String password = signUpDTO.password();
@@ -65,12 +67,11 @@ public class UserService {
                 .build();
         try {
             userRepository.save(user);
-            return true;
+            return new ResponseEntity<>("The user : " + user.getUsername() + " has been created", HttpStatus.CREATED);
         } catch (DataAccessException ex) {
             System.out.println(ex + " Error saving user ... ");
+            return new ResponseEntity<>("The user : " + user.getUsername() + " has not been created", HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        System.out.println("Error saving user ... ");
-        return false;
     }
 
     public User getUserById(Long id) {
