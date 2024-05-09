@@ -8,7 +8,6 @@ import web.technologies.flixer.entity.*;
 import web.technologies.flixer.repository.MovieRepository;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -37,26 +36,8 @@ public class MovieService {
         return new ResponseEntity<>("The movie " + movie.getTitle() + "has been added", HttpStatus.CREATED);
     }
 
-    public List<Movie> getMoviesMatchingAllTags(List<String> tagLabels) {
-        List<Movie> allMovies = movieRepository.findAll();
-        List<Movie> matchingMovies = new ArrayList<>();
-
-        for (Movie movie : allMovies) {
-            if (isMovieContainsAllTags(movie, tagLabels)) {
-                matchingMovies.add(movie);
-            }
-        }
-        return matchingMovies;
-    }
-
-    private boolean isMovieContainsAllTags(Movie movie, List<String> tagLabels) {
-        List<String> movieTagLabels = new ArrayList<>();
-        for (Tag tag : movie.getTags()) {
-            movieTagLabels.add(tag.getLabel());
-        }
-        Collections.sort(movieTagLabels);
-        Collections.sort(tagLabels);
-        return movieTagLabels.equals(tagLabels);
+    public List<Movie> getMoviesContainsTags(List<String> tagLabels){
+        return movieRepository.getMoviesContainsTags(tagLabels);
     }
 
     public List <Movie> getMoviesContainingLetters(String letters) {

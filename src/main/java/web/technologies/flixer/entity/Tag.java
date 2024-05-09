@@ -15,5 +15,6 @@ import lombok.NoArgsConstructor;
 public class Tag {
     @Id
     private Long id;
-    private String label;
+    @Enumerated(EnumType.STRING)
+    private TagLabel label;
 }

@@ -7,8 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Data
 @Builder
@@ -31,12 +29,4 @@ public class Movie {
     private Float price;
     private LocalDate released_at;
     private String director;
-
-    @ManyToMany
-    @JoinTable(
-            name = "movie_tag",
-            joinColumns = @JoinColumn(name = "movie_id"),
-            inverseJoinColumns = @JoinColumn(name = "tag_id")
-    )
-    private List<Tag> tags;
 }
