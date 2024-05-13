@@ -5,10 +5,16 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.Collection;
+import java.util.Collections;
 
 
 @Data
@@ -17,7 +23,7 @@ import java.time.Period;
 @AllArgsConstructor
 @Entity
 @Table(name="user", schema = "public")
-public class User {
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -29,6 +35,10 @@ public class User {
     private transient int age;
     private Boolean enabled;
     private BigDecimal amount;
+    @Column(name = "created_at")
+    private Instant createdAt;
+    @Column(name = "last_update")
+    private Instant lastUpdate;
     @ManyToOne
     @JoinColumn(name = "role_id")
     private Role role;
@@ -38,4 +48,39 @@ public class User {
         return Period.between(birthday, currentDate).getYears();
     }
 
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + this.role.getLabel()));
+    }
+
+    @Override
+    public String getPassword() {
+        return this.password;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.username;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() { // est-ce que le compte a expiré
+        return this.enabled;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() { // est-ce que le compte est bloqué
+        return this.enabled;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() { // est-ce que les informations d'identification ont expiré
+        return this.enabled;
+    }
+
+    @Override
+    public boolean isEnabled() { // est-ce que le compte est actif
+        return this.enabled;
+    }
 }

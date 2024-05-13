@@ -13,25 +13,27 @@ CREATE TABLE "user" (
     birthday DATE NOT NULL,
     amount DECIMAL(10, 2) NOT NULL,
     enabled BOOLEAN NOT NULL DEFAULT FALSE,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    last_update TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     role_id INTEGER NOT NULL,
     CONSTRAINT role_fk FOREIGN KEY (role_id) REFERENCES role(id)
 );
 
+
 CREATE TABLE validation (
-    id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    created_at TIMESTAMP NOT NULL,
-    expired_at TIMESTAMP NOT NULL,
-    activated_at TIMESTAMP,
-    activation_code CHARACTER(6) NOT NULL,
-    user_id INTEGER NOT NULL,
-    CONSTRAINT validation_user_fk FOREIGN KEY (user_id) REFERENCES "user"(id)
+     id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+     code CHARACTER(6) NOT NULL,
+     expired_at TIMESTAMP NOT NULL,
+     enabled BOOLEAN NOT NULL DEFAULT TRUE,
+     user_id INTEGER NOT NULL,
+     CONSTRAINT validation_user_fk FOREIGN KEY (user_id) REFERENCES "user"(id)
 );
 
 CREATE TABLE jwt (
     id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     value VARCHAR NOT NULL,
-    expired BOOLEAN NOT NULL DEFAULT FALSE,
-    deactivated BOOLEAN NOT NULL DEFAULT FALSE,
+    expired_at TIMESTAMP NOT NULL,
+    enabled BOOLEAN NOT NULL DEFAULT TRUE,
     user_id INTEGER NOT NULL,
     CONSTRAINT jwt_user_fk FOREIGN KEY (user_id) REFERENCES "user"(id)
 );
@@ -138,8 +140,8 @@ CREATE TABLE purchase (
     CONSTRAINT purchase_user_fk FOREIGN KEY (user_id) REFERENCES "user"(id),
     CONSTRAINT purchase_movie_fk FOREIGN KEY (movie_id) REFERENCES movie(id)
 );
-INSERT INTO public.user (username, email, password, age, amount, enabled, role_id)
-VALUES ('Youtube', 'youtube@gmail.com', 123, -1, 0, TRUE, 3)
+INSERT INTO public.user (username, email, password, birthday, amount, enabled, created_at, last_update, role_id)
+VALUES ('Youtube', 'youtube@gmail.com', 123, CURRENT_DATE, 0, TRUE, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 3)
 ON CONFLICT (username) DO NOTHING;
 
 /*Before using this check if user_id = 2 exists*/
