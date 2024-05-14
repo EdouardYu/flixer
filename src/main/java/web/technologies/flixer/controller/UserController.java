@@ -32,11 +32,12 @@ public class UserController {
     public User getUserById(@PathVariable Long id) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        if (user.getId().equals(id) || user.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMINISTRATOR"))) {
-            return userService.getUserById(id);
-        } else {
+        if(!user.getId().equals(id) ||
+            user.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMINISTRATOR")))
             throw new AccessDeniedException("Access denied");
-        }
+
+        return userService.getUserById(id);
     }
 
     @GetMapping("/{id}/history")
