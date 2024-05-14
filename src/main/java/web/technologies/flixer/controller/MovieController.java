@@ -1,6 +1,6 @@
 package web.technologies.flixer.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,18 +13,13 @@ import web.technologies.flixer.service.MovieTagService;
 
 import java.util.List;
 
+@AllArgsConstructor
 @RestController
 @RequestMapping("/movies")
 @CrossOrigin(origins = "http://localhost:5173")
 public class MovieController {
     private final MovieService movieService;
     private final MovieTagService movieTagService;
-
-    @Autowired
-    public MovieController(MovieService movieService, MovieTagService movieTagService) {
-        this.movieService = movieService;
-        this.movieTagService = movieTagService;
-    }
 
     @GetMapping()
     public List<Movie> getMovies(@RequestParam(required = false, defaultValue = "0") int limit){
@@ -44,8 +39,8 @@ public class MovieController {
     @PostMapping()
     @Transactional
     public ResponseEntity<String> addNewMovieWithTag(@RequestBody AddMovieDTO addMovieDTO) {
-        Movie movie = addMovieDTO.movie();
-        List<TagLabel> labels = addMovieDTO.labelTag();
+        Movie movie = addMovieDTO.getMovie();
+        List<TagLabel> labels = addMovieDTO.getLabelTag();
         try {
             movieService.addNewMovie(movie);
             movieTagService.addMovieTag(movie, labels);

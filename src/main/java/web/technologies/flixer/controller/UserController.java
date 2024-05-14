@@ -1,46 +1,42 @@
 package web.technologies.flixer.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import web.technologies.flixer.dto.AuthenticationDTO;
 import web.technologies.flixer.dto.HistoryUserDTO;
-import web.technologies.flixer.dto.SignUpDTO;
 import web.technologies.flixer.entity.User;
 import web.technologies.flixer.service.UserService;
 
 import java.util.List;
 
+@AllArgsConstructor
 @RestController
 @RequestMapping("/users")
 @CrossOrigin(origins = "http://localhost:5173")
 public class UserController {
     private final UserService userService;
 
-    @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
-
-    @GetMapping
+    @PreAuthorize("hasRole('ADMINISTRATOR')")
+    @ResponseStatus(value = HttpStatus.OK)
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<User> getUsers(){
         return userService.getUsers();
     }
 
-    @PostMapping(value = "/login", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public boolean isUserExist(@RequestBody AuthenticationDTO authenticationDTO) {
-        return userService.isUserExist(authenticationDTO);
-    }
-
-    @PostMapping(value = "/signup", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> isUserCreated(@RequestBody SignUpDTO signUpDTO) {
-        return userService.createUser(signUpDTO);
-    }
-
-    @GetMapping("/{id}")
+    @ResponseStatus(value = HttpStatus.OK)
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public User getUserById(@PathVariable Long id) {
-        return userService.getUserById(id);
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (user.getId().equals(id) || user.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMINISTRATOR"))) {
+            return userService.getUserById(id);
+        } else {
+            throw new AccessDeniedException("Access denied");
+        }
     }
 
     @GetMapping("/{id}/history")

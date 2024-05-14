@@ -5,7 +5,7 @@ import jakarta.validation.constraints.*;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 @Data
 public class RegistrationDTO {
@@ -30,7 +30,7 @@ public class RegistrationDTO {
     @NotNull(message = "Birthday cannot be null")
     @Past(message = "Birthday must be in the past")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    LocalDate birthday;
+    Date birthday;
 
     @NotNull(message = "Role id cannot be null")
     @Min(value = 1, message = "Unknown role id")
@@ -38,7 +38,7 @@ public class RegistrationDTO {
     private Long roleId;
 
     @JsonCreator
-    public RegistrationDTO(String username, String email, String password, LocalDate birthday, Long roleId) {
+    public RegistrationDTO(String username, String email, String password, Date birthday, Long roleId) {
         this.username = username;
         this.email = email == null ? null : email.toLowerCase();
         this.password = password;

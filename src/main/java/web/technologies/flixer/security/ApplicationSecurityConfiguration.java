@@ -35,12 +35,12 @@ public class ApplicationSecurityConfiguration {
         return httpSecurity
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(authorize -> authorize
-                .requestMatchers(HttpMethod.POST, "/signup").permitAll()
-                .requestMatchers(HttpMethod.POST, "/activate").permitAll()
-                .requestMatchers(HttpMethod.POST, "/activate/new").permitAll()
-                .requestMatchers(HttpMethod.POST, "/signin").permitAll()
-                .requestMatchers(HttpMethod.POST, "/password/reset").permitAll()
-                .requestMatchers(HttpMethod.POST, "/password/new").permitAll()
+                .requestMatchers(HttpMethod.POST, "/users/signup").permitAll()
+                .requestMatchers(HttpMethod.POST, "/users/activate").permitAll()
+                .requestMatchers(HttpMethod.POST, "/users/activate/new").permitAll()
+                .requestMatchers(HttpMethod.POST, "/users/signin").permitAll()
+                .requestMatchers(HttpMethod.POST, "/users/password/reset").permitAll()
+                .requestMatchers(HttpMethod.POST, "/users/password/new").permitAll()
                 .anyRequest().authenticated()
             ).exceptionHandling(exceptionHandling -> exceptionHandling
                     .authenticationEntryPoint((request, response, authException) -> {

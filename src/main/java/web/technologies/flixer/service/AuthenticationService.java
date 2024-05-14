@@ -2,9 +2,6 @@ package web.technologies.flixer.service;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.dao.DataAccessException;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -26,7 +23,6 @@ import web.technologies.flixer.service.exception.ValidationCodeException;
 
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.time.LocalDate;
 import java.util.Optional;
 
 @Slf4j
@@ -65,15 +61,6 @@ public class AuthenticationService implements UserDetailsService {
             .build();
 
         this.authenticationRepository.save(user);
-        /*
-        try {
-            userRepository.save(user);
-            return new ResponseEntity<>("The user : " + user.getUsername() + " has been created", HttpStatus.CREATED);
-        } catch (DataAccessException ex) {
-            System.out.println(ex + " Error saving user ... ");
-            return new ResponseEntity<>("The user : " + user.getUsername() + " has not been created", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-         */
 
         this.validationService.register(user);
     }

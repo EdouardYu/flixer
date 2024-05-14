@@ -11,10 +11,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.time.LocalDate;
-import java.time.Period;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 
 
 @Data
@@ -30,7 +30,7 @@ public class User implements UserDetails {
     private String username;
     private String email;
     private String password;
-    private LocalDate birthday;
+    private Date birthday;
     @Transient
     private transient int age;
     private Boolean enabled;
@@ -44,8 +44,11 @@ public class User implements UserDetails {
     private Role role;
 
     public int getAge() {
-        LocalDate currentDate = LocalDate.now();
-        return Period.between(birthday, currentDate).getYears();
+        Calendar now = Calendar.getInstance();
+        Calendar birthday = Calendar.getInstance();
+        birthday.setTime(this.birthday);
+
+        return birthday.get(Calendar.YEAR) - now.get(Calendar.YEAR);
     }
 
 

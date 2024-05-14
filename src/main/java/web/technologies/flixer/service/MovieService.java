@@ -1,6 +1,6 @@
 package web.technologies.flixer.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -10,14 +10,10 @@ import web.technologies.flixer.repository.MovieRepository;
 import java.util.ArrayList;
 import java.util.List;
 
+@AllArgsConstructor
 @Service
 public class MovieService {
     private final MovieRepository movieRepository;
-
-    @Autowired
-    public MovieService(MovieRepository movieRepository){
-        this.movieRepository = movieRepository;
-    }
 
     public List<Movie> getMovies(){
         return movieRepository.findAll();

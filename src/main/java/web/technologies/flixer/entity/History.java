@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Timestamp;
+import java.time.Instant;
 
 @Data
 @AllArgsConstructor
@@ -21,5 +21,5 @@ public class History {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-    private Timestamp watched_at;
+    private Instant watched_at;
 }
