@@ -77,7 +77,7 @@ public class MovieController {
     }
 
     @ResponseStatus(value = HttpStatus.OK)
-    @GetMapping(path = "/purchase", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/purchase", produces = MediaType.APPLICATION_JSON_VALUE)
     public void purchase(@RequestBody PurchaseDTO purchaseDTO) {
         this.movieService.purchase(purchaseDTO);
     }

@@ -6,19 +6,30 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import web.technologies.flixer.dto.PurchaseDTO;
 import web.technologies.flixer.dto.SearchCriteria;
 import web.technologies.flixer.entity.*;
 import web.technologies.flixer.repository.MovieRepository;
+import web.technologies.flixer.repository.PurchaseRepository;
+import web.technologies.flixer.repository.UserRepository;
 import web.technologies.flixer.repository.specification.MovieSpecification;
+import web.technologies.flixer.service.exception.InsufficientAmountException;
+import web.technologies.flixer.service.exception.MovieNotFoundException;
 
+import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
+@Transactional
 @AllArgsConstructor
 @Service
 public class MovieService {
     private final MovieRepository movieRepository;
+    private final UserRepository userRepository;
+    private final PurchaseRepository purchaseRepository;
+    private final UserService userService;
 
     public List<Movie> getMovies(){
         return movieRepository.findAll();
@@ -77,6 +88,25 @@ public class MovieService {
     }
 
     public void purchase(PurchaseDTO purchaseDTO) {
-        
+        User user = this.userService.hasPermission(purchaseDTO.getUserId());
+
+        Movie movie = this.movieRepository.findMovieById(purchaseDTO.getMovieId())
+            .orElseThrow(() -> new MovieNotFoundException("Movie with id " + purchaseDTO.getMovieId() + " does not exist"));
+
+        if(user.getAmount().subtract(BigDecimal.valueOf(movie.getPrice())).compareTo(BigDecimal.ZERO) < 0)
+            throw new InsufficientAmountException("Transaction failed, insufficient amount");
+
+        Instant now = Instant.now();
+        user.setAmount(user.getAmount().subtract(BigDecimal.valueOf(movie.getPrice())));
+        user.setLastUpdate(now);
+        user = this.userRepository.save(user);
+
+        Purchase purchase = Purchase.builder()
+            .user(user)
+            .movie(movie)
+            .purchasedAt(now)
+            .build();
+
+        this.purchaseRepository.save(purchase);
     }
 }

@@ -134,7 +134,7 @@ public class UserService {
         this.userRepository.save(user);
     }
 
-    private User hasPermission(Long id) {
+    public User hasPermission(Long id) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User dbUser = this.userRepository.findById(id)
             .orElseThrow(() -> new UsernameNotFoundException("No user exist with the id " + id));
@@ -152,6 +152,10 @@ public class UserService {
             throw new InsufficientAmountException("Transaction failed, insufficient amount in your account");
 
         Instant now = Instant.now();
+        user.setAmount(user.getAmount().subtract(SUBSCRIPTION_PRICE));
+        user.setLastUpdate(now);
+        user = this.userRepository.save(user);
+
         Optional<Subscription> activeSubscription = this.subscriptionRepository
             .findActiveSubscriptionByUserId(userId, now);
 
@@ -184,10 +188,6 @@ public class UserService {
 
         }
         subscription = this.subscriptionRepository.save(subscription);
-
-        user.setAmount(user.getAmount().subtract(SUBSCRIPTION_PRICE));
-        user.setLastUpdate(now);
-        user = this.userRepository.save(user);
 
         return UserDTO.builder()
             .id(user.getId())
