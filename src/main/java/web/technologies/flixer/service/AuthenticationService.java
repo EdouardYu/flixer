@@ -35,30 +35,53 @@ public class AuthenticationService implements UserDetailsService {
     private final BCryptPasswordEncoder passwordEncoder;
     private final ValidationService validationService;
 
-    public void signUp(RegistrationDTO userTO) {
+    public void signUp(RegistrationDTO userDTO) {
         Optional<User> dbUser;
-        dbUser= this.authenticationRepository.findByEmail(userTO.getEmail());
-        if(dbUser.isPresent())
-            throw new AlreadyUsedException("Email already used");
-        dbUser = this.authenticationRepository.findByUsername(userTO.getUsername());
-        if(dbUser.isPresent())
-            throw new AlreadyUsedException("Username already used");
+        dbUser= this.authenticationRepository.findByEmail(userDTO.getEmail());
 
-        String encryptedPassword = this.passwordEncoder.encode(userTO.getPassword());
-        Role role = this.roleRepository.getRoleById(userTO.getRoleId());
-        Instant now = Instant.now();
+        User user;
+        if(dbUser.isPresent()) {
+            user = dbUser.get();
+            if (user.getEnabled())
+                throw new AlreadyUsedException("Email already used");
 
-        User user = User.builder()
-            .username(userTO.getUsername())
-            .email(userTO.getEmail())
-            .password(encryptedPassword)
-            .birthday(userTO.getBirthday())
-            .amount(BigDecimal.ZERO)
-            .createdAt(now)
-            .lastUpdate(now)
-            .enabled(false)
-            .role(role)
-            .build();
+            dbUser = this.authenticationRepository.findByUsername(userDTO.getUsername());
+
+            if(dbUser.isPresent())
+                throw new AlreadyUsedException("Username already used");
+
+            String encryptedPassword = this.passwordEncoder.encode(userDTO.getPassword());
+            Instant now = Instant.now();
+            Role role = this.roleRepository.getRoleById(userDTO.getRoleId());
+
+            user.setUsername(userDTO.getUsername());
+            user.setPassword(encryptedPassword);
+            user.setBirthday(userDTO.getBirthday());
+            user.setCreatedAt(now);
+            user.setLastUpdate(now);
+            user.setRole(role);
+        } else {
+            dbUser = this.authenticationRepository.findByUsername(userDTO.getUsername());
+
+            if(dbUser.isPresent())
+                throw new AlreadyUsedException("Username already used");
+
+            String encryptedPassword = this.passwordEncoder.encode(userDTO.getPassword());
+            Instant now = Instant.now();
+            Role role = this.roleRepository.getRoleById(userDTO.getRoleId());
+
+            user = User.builder()
+                .username(userDTO.getUsername())
+                .email(userDTO.getEmail())
+                .password(encryptedPassword)
+                .birthday(userDTO.getBirthday())
+                .amount(BigDecimal.ZERO)
+                .createdAt(now)
+                .lastUpdate(now)
+                .enabled(false)
+                .role(role)
+                .build();
+        }
 
         this.authenticationRepository.save(user);
 

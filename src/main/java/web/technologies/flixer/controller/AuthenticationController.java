@@ -42,7 +42,7 @@ public class AuthenticationController {
 
     @ResponseStatus(value = HttpStatus.OK)
     @PostMapping(path = "signin", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public LoginDTO signIn(@RequestBody AuthenticationDTO authenticationDTO) {
+    public Map<String, String> signIn(@RequestBody AuthenticationDTO authenticationDTO) {
         this.authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
             authenticationDTO.getUsername(),
             authenticationDTO.getPassword()

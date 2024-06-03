@@ -107,9 +107,12 @@ CREATE TABLE subscription_plan (
     id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     name VARCHAR NOT NULL,
     price DECIMAL(10, 2) NOT NULL,
-    duration INTERVAL NOT NULL,
+    duration VARCHAR NOT NULL,
     description TEXT NOT NULL
 );
+
+INSERT INTO subscription_plan (name, price, description, duration)
+VALUES ('monthly Flixer subscription', 9.99, '$9.99 monthly Flixer subscription', 'P1M');
 
 CREATE TABLE subscription_status (
     id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,

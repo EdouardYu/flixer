@@ -1,6 +1,7 @@
 package web.technologies.flixer.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -32,6 +33,7 @@ public class RegistrationDTO {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     Date birthday;
 
+    @JsonProperty("role_id")
     @NotNull(message = "Role id cannot be null")
     @Min(value = 1, message = "Unknown role id")
     @Max(value = 3, message = "Unknown role id")

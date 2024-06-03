@@ -6,9 +6,11 @@ import io.jsonwebtoken.security.SignatureException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.HttpMessageConversionException;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -17,10 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import web.technologies.flixer.dto.ErrorEntity;
-import web.technologies.flixer.service.exception.AlreadyProcessedException;
-import web.technologies.flixer.service.exception.AlreadyUsedException;
-import web.technologies.flixer.service.exception.NotYetEnabledException;
-import web.technologies.flixer.service.exception.ValidationCodeException;
+import web.technologies.flixer.service.exception.*;
 
 @Slf4j
 @RestControllerAdvice
@@ -31,7 +30,10 @@ public class ApplicationControllerAdvice {
         ValidationCodeException.class,
         UsernameNotFoundException.class,
         NotYetEnabledException.class,
-        LockedException.class
+        LockedException.class,
+        BadPasswordException.class,
+        InsufficientAmountException.class,
+        HttpMessageConversionException.class
     })
     public @ResponseBody ErrorEntity handleBadRequestException(RuntimeException e) {
         log.warn(String.valueOf(e));

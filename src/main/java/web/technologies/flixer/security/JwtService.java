@@ -12,7 +12,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import web.technologies.flixer.dto.LoginDTO;
 import web.technologies.flixer.entity.Jwt;
 import web.technologies.flixer.entity.User;
 import web.technologies.flixer.repository.JwtRepository;
@@ -38,7 +37,7 @@ public class JwtService {
     @Value("${encryption.key}")
     private String ENCRYPTION_KEY;
 
-    public LoginDTO generate(String username) {
+    public Map<String, String> generate(String username) {
         User user = this.authenticationService.loadUserByUsername(username);
 
         this.disableTokens(user);
@@ -57,12 +56,7 @@ public class JwtService {
 
         this.jwtRepository.save(jwt);
 
-        return LoginDTO.builder()
-            .token(jwtMap.get(this.BEARER))
-            .id(user.getId())
-            .username(user.getUsername())
-            .email(user.getEmail())
-            .build();
+        return jwtMap;
     }
 
     private void disableTokens(User user) {
@@ -75,6 +69,7 @@ public class JwtService {
 
     private Map<String, String> generateJwt(User user, long currentTime, long expirationTime) {
         Map<String, String> claims = Map.of(
+            "id", String.valueOf(user.getId()),
             "username", user.getUsername(),
             "role", user.getRole().getLabel()
         );

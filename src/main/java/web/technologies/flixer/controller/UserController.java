@@ -1,13 +1,14 @@
 package web.technologies.flixer.controller;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import web.technologies.flixer.dto.HistoryUserDTO;
+import web.technologies.flixer.dto.*;
 import web.technologies.flixer.entity.User;
 import web.technologies.flixer.service.UserService;
 
@@ -23,25 +24,42 @@ public class UserController {
     @PreAuthorize("hasRole('ADMINISTRATOR')")
     @ResponseStatus(value = HttpStatus.OK)
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<User> getUsers(){
-        return userService.getUsers();
+    public Page<User> getUsers(Pageable pageable){
+        return userService.getUsers(pageable);
     }
 
     @ResponseStatus(value = HttpStatus.OK)
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public User getUserById(@PathVariable Long id) {
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        if(!user.getId().equals(id) ||
-            user.getAuthorities().stream()
-                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMINISTRATOR")))
-            throw new AccessDeniedException("Access denied");
-
+    public UserDTO getUserById(@PathVariable Long id) {
         return userService.getUserById(id);
     }
 
     @GetMapping("/{id}/history")
     public List <HistoryUserDTO> getHistoryByUserId(@PathVariable Long id) {
         return userService.getHistoryByUserId(id);
+    }
+
+    @ResponseStatus(value = HttpStatus.OK)
+    @PutMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public UserDTO modifyUser(@PathVariable Long id, @Valid @RequestBody UserModificationDTO userDTO) {
+        return this.userService.modifyUser(id, userDTO);
+    }
+
+    @ResponseStatus(value = HttpStatus.OK)
+    @PostMapping(path = "/{id}/credit", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public UserDTO creditAccount(@PathVariable Long id, @Valid @RequestBody CreditAccountDTO userDTO) {
+        return this.userService.creditAccount(id, userDTO);
+    }
+
+    @ResponseStatus(value = HttpStatus.OK)
+    @PutMapping(path = "/{id}/password", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void modifyPassword(@PathVariable Long id, @Valid @RequestBody PasswordModificationDTO userDTO) {
+        this.userService.modifyPassword(id, userDTO);
+    }
+
+    @ResponseStatus(value = HttpStatus.OK)
+    @PostMapping(path = "/{id}/subscribe", produces = MediaType.APPLICATION_JSON_VALUE)
+    public UserDTO subscribe(@PathVariable Long id) {
+        return this.userService.subscribe(id);
     }
 }
