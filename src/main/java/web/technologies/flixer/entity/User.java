@@ -40,12 +40,6 @@ public class User implements UserDetails {
     @JoinColumn(name = "role_id")
     private Role role;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user", orphanRemoval = true)
-    private List<Subscription> subscriptions = new ArrayList<>();
-
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user", orphanRemoval = true)
-    private List<Purchase> purchases = new ArrayList<>();
-
     public int getAge() {
         Calendar now = Calendar.getInstance();
         Calendar birthday = Calendar.getInstance();

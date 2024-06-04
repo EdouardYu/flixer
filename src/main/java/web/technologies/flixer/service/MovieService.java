@@ -109,4 +109,14 @@ public class MovieService {
 
         this.purchaseRepository.save(purchase);
     }
+
+    public boolean isPurchased(PurchaseDTO purchaseDTO) {
+        this.userService.hasPermission(purchaseDTO.getUserId());
+
+        this.movieRepository.findMovieById(purchaseDTO.getMovieId())
+            .orElseThrow(() -> new MovieNotFoundException("Movie with id " + purchaseDTO.getMovieId() + " does not exist"));
+
+        return this.purchaseRepository
+            .existsByUserIdAndMovieId(purchaseDTO.getUserId(), purchaseDTO.getMovieId());
+    }
 }

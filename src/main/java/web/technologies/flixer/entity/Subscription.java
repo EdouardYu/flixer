@@ -1,7 +1,7 @@
 package web.technologies.flixer.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -33,11 +33,15 @@ public class Subscription {
     @JoinColumn(name = "status_id")
     private SubscriptionStatus status;
 
+    @JsonProperty("subscribed_at")
     private Instant subscribedAt = Instant.now();
 
+    @JsonProperty("renewed_at")
     private Instant renewedAt;
 
+    @JsonProperty("started_at")
     private Instant startedAt;
 
+    @JsonProperty("ended_at")
     private Instant endedAt;
 }

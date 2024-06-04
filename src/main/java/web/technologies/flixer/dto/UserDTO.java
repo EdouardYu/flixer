@@ -20,6 +20,6 @@ public class UserDTO {
     @JsonFormat(pattern="yyyy-MM-dd")
     private Date birthday;
     private Role role;
-    @JsonProperty("active_suscription")
+    @JsonProperty("active_subscription")
     private Subscription activeSubscription;
 }

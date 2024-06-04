@@ -71,14 +71,20 @@ public class MovieController {
     }
 
     @ResponseStatus(value = HttpStatus.OK)
-    @GetMapping(path = "/search", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/search", produces = MediaType.APPLICATION_JSON_VALUE)
     public Page<Movie> searchMovies(@RequestBody List<SearchCriteria> criteria, Pageable pageable) {
         return this.movieService.searchMovies(criteria, pageable);
     }
 
     @ResponseStatus(value = HttpStatus.OK)
-    @PostMapping(path = "/purchase", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/purchase")
     public void purchase(@RequestBody PurchaseDTO purchaseDTO) {
         this.movieService.purchase(purchaseDTO);
+    }
+
+    @ResponseStatus(value = HttpStatus.OK)
+    @PostMapping(path = "/purchased")
+    public boolean isPurchased(@RequestBody PurchaseDTO purchaseDTO) {
+        return this.movieService.isPurchased(purchaseDTO);
     }
 }
