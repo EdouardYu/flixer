@@ -31,12 +31,8 @@ public class MovieService {
     private final PurchaseRepository purchaseRepository;
     private final UserService userService;
 
-    public List<Movie> getMovies(){
-        return movieRepository.findAll();
-    }
-
-    public List<Movie> getMovies(int limit) {
-        return movieRepository.findRandomNMovies(limit);
+    public Page<Movie> getMovies(Pageable pageable) {
+        return this.movieRepository.findAll(pageable);
     }
 
     public Movie getMovieById(Long id){
@@ -48,20 +44,15 @@ public class MovieService {
         return new ResponseEntity<>("The movie " + movie.getTitle() + "has been added", HttpStatus.CREATED);
     }
 
-    public List<Movie> getMoviesContainsTags(List<String> tagLabels){
-        return movieRepository.getMoviesContainsTags(tagLabels);
+    public Page<Movie> getMoviesContainsTags(List<String> tagLabels, Pageable pageable){
+        return this.movieRepository.getMoviesContainsTags(tagLabels, pageable);
     }
 
-    public List <Movie> getMoviesContainingLetters(String letters) {
-        List<Movie> allMovies = movieRepository.findAll();
-        List<Movie> matchingMovies = new ArrayList<>();
+    public Page <Movie> getMoviesContainingLetters(String letters, Pageable pageable) {
+        if(letters.isBlank())
+            return this.movieRepository.findAll(pageable);
 
-        for (Movie movie : allMovies) {
-            if (movieContainsAllLetters(movie, letters)) {
-                matchingMovies.add(movie);
-            }
-        }
-        return matchingMovies;
+        return this.movieRepository.getMoviesContainingLetters(letters, pageable);
     }
 
     private boolean movieContainsAllLetters(Movie movie, String letters) {

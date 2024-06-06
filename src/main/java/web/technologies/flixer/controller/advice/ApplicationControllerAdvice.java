@@ -34,7 +34,8 @@ public class ApplicationControllerAdvice {
         BadPasswordException.class,
         InsufficientAmountException.class,
         HttpMessageConversionException.class,
-        MovieNotFoundException.class
+        MovieNotFoundException.class,
+        InsufficientAmountException.class
     })
     public @ResponseBody ErrorEntity handleBadRequestException(RuntimeException e) {
         log.warn(String.valueOf(e));

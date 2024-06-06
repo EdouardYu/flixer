@@ -27,12 +27,8 @@ public class MovieController {
     private final MovieTagService movieTagService;
 
     @GetMapping()
-    public List<Movie> getMovies(@RequestParam(required = false, defaultValue = "0") int limit){
-        if (limit > 0) {
-            return movieService.getMovies(limit);
-        } else {
-            return movieService.getMovies();
-        }
+    public Page<Movie> getMovies(Pageable pageable){
+        return this.movieService.getMovies(pageable);
     }
 
     @GetMapping("/{id}")
@@ -56,13 +52,13 @@ public class MovieController {
     }
 
     @GetMapping("/tags")
-        public List<Movie> getMoviesContainsTags(@RequestParam List<String> tagLabel){
-            return movieService.getMoviesContainsTags(tagLabel);
+        public Page<Movie> getMoviesContainsTags(@RequestParam List<String> tagLabel, Pageable pageable){
+            return this.movieService.getMoviesContainsTags(tagLabel, pageable);
     }
 
     @GetMapping("/findByName")
-    public List<Movie> getMoviesContainingLetters(@RequestParam String letters){
-        return movieService.getMoviesContainingLetters(letters);
+    public Page<Movie> getMoviesContainingLetters(@RequestParam String letters, Pageable pageable){
+        return this.movieService.getMoviesContainingLetters(letters, pageable);
     }
 
     @GetMapping("/getTopRatedMovies")
