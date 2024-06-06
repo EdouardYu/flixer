@@ -34,6 +34,12 @@ public class UserController {
         return userService.getUserById(id);
     }
 
+    @ResponseStatus(value = HttpStatus.OK)
+    @PostMapping(path = "/{id}/subscribed")
+    public boolean isSubscribed(@PathVariable Long id) {
+        return this.userService.isSubscribed(id);
+    }
+
     @GetMapping("/{id}/history")
     public List <HistoryUserDTO> getHistoryByUserId(@PathVariable Long id) {
         return userService.getHistoryByUserId(id);

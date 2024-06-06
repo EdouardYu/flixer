@@ -210,4 +210,13 @@ public class UserService {
 
         this.subscriptionRepository.saveAll(subscriptions);
     }
+
+    public boolean isSubscribed(Long id) {
+        hasPermission(id);
+
+        Optional<Subscription> activeSubscription = this.subscriptionRepository
+            .findActiveSubscriptionByUserId(id, Instant.now());
+
+        return activeSubscription.isPresent();
+    }
 }
