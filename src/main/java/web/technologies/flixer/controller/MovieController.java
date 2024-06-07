@@ -13,9 +13,12 @@ import web.technologies.flixer.dto.PurchaseDTO;
 import web.technologies.flixer.dto.SearchCriteria;
 import web.technologies.flixer.entity.Movie;
 import web.technologies.flixer.entity.TagLabel;
+import web.technologies.flixer.entity.User;
 import web.technologies.flixer.service.MovieService;
 import web.technologies.flixer.service.MovieTagService;
+import web.technologies.flixer.service.UserService;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @AllArgsConstructor
@@ -25,6 +28,7 @@ import java.util.List;
 public class MovieController {
     private final MovieService movieService;
     private final MovieTagService movieTagService;
+    private final UserService userService;
 
     @GetMapping()
     public Page<Movie> getMovies(Pageable pageable){
@@ -40,7 +44,25 @@ public class MovieController {
     @PostMapping()
     @Transactional
     public ResponseEntity<String> addNewMovieWithTag(@RequestBody AddMovieDTO addMovieDTO) {
-        Movie movie = addMovieDTO.getMovie();
+        String title = addMovieDTO.getTitle();
+        String url = addMovieDTO.getUrl();
+        String description = addMovieDTO.getDescription();
+        Long supplierId = addMovieDTO.getSupplierId();
+        String posterUrl = addMovieDTO.getPoster_url();
+        Float price = addMovieDTO.getPrice();
+        LocalDate releasedAt = addMovieDTO.getReleased_at();
+        String director = addMovieDTO.getDirector();
+        User supplier = this.userService.getUserEntityById(supplierId);
+        Movie movie = Movie.builder()
+                .title(title)
+                .url(url)
+                .description(description)
+                .supplier(supplier)
+                .poster_url(posterUrl)
+                .price(price)
+                .released_at(releasedAt)
+                .director(director)
+                .build();
         List<TagLabel> labels = addMovieDTO.getLabelTag();
         try {
             movieService.addNewMovie(movie);

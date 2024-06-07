@@ -219,4 +219,8 @@ public class UserService {
 
         return activeSubscription.isPresent();
     }
+
+    public User getUserEntityById(Long id) {
+        return this.userRepository.findUserById(id).orElseThrow(() -> new RuntimeException("User with id " + id.toString() + " not found"));
+    }
 }
