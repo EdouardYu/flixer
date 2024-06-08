@@ -6,10 +6,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import web.technologies.flixer.dto.*;
 import web.technologies.flixer.entity.User;
+import web.technologies.flixer.service.HistoryService;
 import web.technologies.flixer.service.UserService;
 
 import java.util.List;
@@ -20,6 +22,7 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:5173")
 public class UserController {
     private final UserService userService;
+    private final HistoryService historyService;
 
     @PreAuthorize("hasRole('ADMINISTRATOR')")
     @ResponseStatus(value = HttpStatus.OK)
@@ -68,4 +71,7 @@ public class UserController {
     public UserDTO subscribe(@PathVariable Long id) {
         return this.userService.subscribe(id);
     }
+
+
+
 }
