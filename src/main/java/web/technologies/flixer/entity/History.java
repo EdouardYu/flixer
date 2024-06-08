@@ -22,4 +22,10 @@ public class History {
     @JoinColumn(name = "user_id")
     private User user;
     private Instant watched_at;
+
+    public History(Long movieId, Long userId, Instant watched_at) {
+        this.id = new HistoryId(movieId, userId);
+        this.watched_at = watched_at;
+    }
 }
+
