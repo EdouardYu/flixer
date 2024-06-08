@@ -12,12 +12,13 @@ import java.time.Instant;
 @NoArgsConstructor
 @Entity
 @Table(name = "history", schema = "public")
+@IdClass(HistoryId.class)
 public class History {
-    @EmbeddedId
-    private HistoryId id;
+    @Id
     @ManyToOne
     @JoinColumn(name = "movie_id")
     private Movie movie;
+    @Id
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;

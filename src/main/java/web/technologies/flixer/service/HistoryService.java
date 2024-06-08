@@ -8,6 +8,7 @@ import web.technologies.flixer.entity.History;
 import web.technologies.flixer.entity.HistoryId;
 import web.technologies.flixer.entity.Movie;
 import web.technologies.flixer.entity.User;
+import web.technologies.flixer.repository.HistoryRepository;
 import web.technologies.flixer.repository.MovieRepository;
 import web.technologies.flixer.repository.UserRepository;
 
@@ -18,6 +19,7 @@ import java.time.Instant;
 public class HistoryService {
     private final MovieRepository movieRepository;
     private final UserRepository userRepository;
+    private final HistoryRepository historyRepository;
 
     public ResponseEntity<String> saveHistory(Long userId, Long movieId) {
         Instant watchedAt = Instant.now();
@@ -30,14 +32,13 @@ public class HistoryService {
 
         // Create the History instance
         History history = new History();
-        history.setId(new HistoryId(movieId, userId));
-        history.setMovie(movie);
         history.setUser(user);
+        history.setMovie(movie);
         history.setWatched_at(watchedAt);
 
         // Save the History instance
         System.out.println("History: " + history);
-//        this.historyRepository.save(history);
+        this.historyRepository.save(history);
         return new ResponseEntity<>("History added for user id " + userId.toString() + " for the movie " + movieId.toString(), HttpStatus.CREATED);
     }
 }

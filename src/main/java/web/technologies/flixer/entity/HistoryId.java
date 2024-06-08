@@ -10,13 +10,9 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 
 @Data
-@Embeddable
 @NoArgsConstructor
 @AllArgsConstructor
 public class HistoryId implements Serializable {
-    @Column(name = "movie_id", insertable = false, updatable = false)
-    private Long movieId;
-
-    @Column(name = "user_id", insertable = false, updatable = false)
-    private Long userId;
+    private Movie movie;
+    private User user;
 }
