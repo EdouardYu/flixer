@@ -19,7 +19,6 @@ import web.technologies.flixer.service.exception.MovieNotFoundException;
 
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
 
 @Transactional
@@ -60,8 +59,8 @@ public class MovieService {
         return movieName.contains(letters);
     }
 
-    public List<Movie> getTopRatedMovies(int limit) {
-        return movieRepository.getTopRatedMovies(limit);
+    public Page<Movie> getTopRatedMovies(Pageable pageable) {
+        return movieRepository.getTopRatedMovies(pageable);
     }
 
     public Page<Movie> searchMovies(List<SearchCriteria> criteria, Pageable pageable) {
@@ -112,6 +111,6 @@ public class MovieService {
     }
 
     public Page<Movie> discoverMovies(Pageable pageable) {
-        return this.movieRepository.findTop10ByOrderByReleased_atDesc(pageable);
+        return this.movieRepository.findAllByOrderByReleased_atDesc(pageable);
     }
 }

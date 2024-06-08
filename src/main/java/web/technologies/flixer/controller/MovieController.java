@@ -83,8 +83,8 @@ public class MovieController {
     }
 
     @GetMapping("/getTopRatedMovies")
-    public List<Movie> getTopRatedMovies(@RequestParam(required = false, defaultValue = "5") int limit) {
-        return movieService.getTopRatedMovies(limit);
+    public Page<Movie> getTopRatedMovies(Pageable pageable) {
+        return movieService.getTopRatedMovies(pageable);
     }
 
     @ResponseStatus(value = HttpStatus.OK)

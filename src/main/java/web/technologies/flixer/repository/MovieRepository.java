@@ -17,8 +17,8 @@ import java.util.Optional;
 public interface MovieRepository extends JpaRepository<Movie, Long>, JpaSpecificationExecutor<Movie> {
     Optional<Movie> findMovieById(Long id);
 
-    @Query(value = "SELECT m.*, AVG(r.value) as avg_rating FROM movie m INNER JOIN Rating r ON m.id = r.movie_id GROUP BY m.id ORDER BY avg_rating DESC LIMIT ?1", nativeQuery = true)
-    List<Movie> getTopRatedMovies(int limit);
+    @Query(value = "SELECT m.*, AVG(r.value) as avg_rating FROM movie m INNER JOIN Rating r ON m.id = r.movie_id GROUP BY m.id ORDER BY avg_rating DESC", nativeQuery = true)
+    Page<Movie> getTopRatedMovies(Pageable pageable);
 
     @Query(value = "SELECT DISTINCT m.* FROM movie m JOIN movie_tag mt ON m.id = mt.movie_id JOIN tag t ON mt.tag_id = t.id WHERE t.label IN :tagLabels", nativeQuery = true)
     Page<Movie> getMoviesContainsTags(List<String> tagLabels, Pageable pageable);
@@ -26,5 +26,5 @@ public interface MovieRepository extends JpaRepository<Movie, Long>, JpaSpecific
     @Query("SELECT m FROM Movie m WHERE LOWER(m.title) LIKE LOWER(CONCAT('%', :term, '%'))")
     Page<Movie> getMoviesContainingLetters(String term, Pageable pageable);
 
-    Page<Movie> findTop10ByOrderByReleased_atDesc(Pageable pageable);
+    Page<Movie> findAllByOrderByReleased_atDesc(Pageable pageable);
 }
