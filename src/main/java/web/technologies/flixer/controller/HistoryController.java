@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import web.technologies.flixer.dto.PurchaseDTO;
 import web.technologies.flixer.service.HistoryService;
 
 
@@ -16,11 +17,10 @@ import web.technologies.flixer.service.HistoryService;
 public class HistoryController {
     private final HistoryService historyService;
 
-
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> addHistory(@RequestBody Long userId, @RequestBody Long movieId) {
-        System.out.println("userId: " + userId + " movieId: " + movieId);
-        return this.historyService.saveHistory(userId, movieId);
+    public ResponseEntity<String> addHistory(@RequestBody PurchaseDTO purchaseDTO) {
+        System.out.println("userId: " + purchaseDTO.getUserId() + " movieId: " + purchaseDTO.getMovieId());
+        return this.historyService.saveHistory(purchaseDTO.getUserId(), purchaseDTO.getMovieId());
     }
 
 }
