@@ -5,7 +5,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import web.technologies.flixer.entity.History;
-import web.technologies.flixer.entity.HistoryId;
 import web.technologies.flixer.entity.Movie;
 import web.technologies.flixer.entity.User;
 import web.technologies.flixer.repository.HistoryRepository;

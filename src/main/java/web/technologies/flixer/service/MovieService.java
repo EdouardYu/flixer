@@ -110,4 +110,8 @@ public class MovieService {
         return this.purchaseRepository
             .existsByUserIdAndMovieId(purchaseDTO.getUserId(), purchaseDTO.getMovieId());
     }
+
+    public Page<Movie> discoverMovies(Pageable pageable) {
+        return this.movieRepository.findTop10ByOrderByReleased_atDesc(pageable);
+    }
 }

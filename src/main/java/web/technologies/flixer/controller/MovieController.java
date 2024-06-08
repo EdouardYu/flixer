@@ -40,7 +40,6 @@ public class MovieController {
         return movieService.getMovieById(id);
     }
 
-
     @PostMapping()
     @Transactional
     public ResponseEntity<String> addNewMovieWithTag(@RequestBody AddMovieDTO addMovieDTO) {
@@ -104,5 +103,10 @@ public class MovieController {
     @PostMapping(path = "/purchased")
     public boolean isPurchased(@RequestBody PurchaseDTO purchaseDTO) {
         return this.movieService.isPurchased(purchaseDTO);
+    }
+
+    @GetMapping(path = "/discover")
+    public Page<Movie> discoverMovies(Pageable pageable) {
+        return this.movieService.discoverMovies(pageable);
     }
 }
