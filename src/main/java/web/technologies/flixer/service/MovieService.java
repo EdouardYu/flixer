@@ -111,6 +111,6 @@ public class MovieService {
     }
 
     public Page<Movie> discoverMovies(Pageable pageable) {
-        return this.movieRepository.findAllByOrderByReleased_atDesc(pageable);
+        return this.movieRepository.findAllByOrderByReleasedAtDesc(pageable);
     }
 }

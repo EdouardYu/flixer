@@ -26,5 +26,7 @@ public interface MovieRepository extends JpaRepository<Movie, Long>, JpaSpecific
     @Query("SELECT m FROM Movie m WHERE LOWER(m.title) LIKE LOWER(CONCAT('%', :term, '%'))")
     Page<Movie> getMoviesContainingLetters(String term, Pageable pageable);
 
-    Page<Movie> findAllByOrderByReleased_atDesc(Pageable pageable);
+    @Query(value = "SELECT * FROM Movie ORDER BY released_at DESC",
+        nativeQuery = true)
+    Page<Movie> findAllByOrderByReleasedAtDesc(Pageable pageable);
 }
